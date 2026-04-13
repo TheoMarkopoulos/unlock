@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "unlock"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "click",
+    "torch",
+    "transformers",
+    "nnsight",
+    "numpy",
+    "scikit-learn",
+    "huggingface_hub",
+    "tqdm",
+    "datasets",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
+
+[project.scripts]
+unlock = "cli:unlock"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/unlock"]

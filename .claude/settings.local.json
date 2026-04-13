@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(py:*)",
+      "Bash(python -c \"from unlock.transfer import compute_alignment, DirectionContext, load_direction; print\\('ok'\\)\")",
+      "Bash(PYTHONPATH=src python -c \"from unlock.transfer import compute_alignment, DirectionContext, load_direction; print\\('ok'\\)\")",
+      "Bash(python -m py_compile src/unlock/transfer.py)",
+      "Bash(python -c \"from cli import unlock; print\\('import ok'\\); ctx = unlock.make_context\\('unlock', ['extract', '--help']\\); \")",
+      "Bash(PYTHONPATH=src python -c \"from cli import unlock; from click.testing import CliRunner; r = CliRunner\\(\\).invoke\\(unlock, ['extract', '--help']\\); print\\(r.output\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('cli.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/unlock/eval.py'\\).read\\(\\)\\); print\\('syntax ok'\\)\")",
+      "Bash(python -c \"import ast; ast.parse\\(open\\('cli.py'\\).read\\(\\)\\); ast.parse\\(open\\('src/unlock/hub.py'\\).read\\(\\)\\); print\\('ok'\\)\")",
+      "Bash(python:*)",
+      "Bash(PYTHONPATH=src python -m pytest tests/test_extract.py -v)",
+      "Bash(pip install:*)",
+      "Bash(ls C:/Users/Theo/Desktop/projects/unlock/README*)"
+    ]
+  }
+}

@@ -2,9 +2,10 @@
 
 > Extract capability directions from one LLM and transfer them into another via linear alignment of the residual stream.
 
-[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#license)
-[![HuggingFace Hub](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Hub-yellow)](https://huggingface.co/)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)](#license)
+[![HuggingFace Hub](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Hub-yellow)](https://huggingface.co/models?other=unlock)
+[![arXiv](https://img.shields.io/badge/arXiv-2604.06377-b31b1b.svg)](https://arxiv.org/abs/2604.06377)
 
 ---
 
@@ -40,19 +41,19 @@ The CLI exposes four core commands — extract, transfer, eval, push.
 
 ```bash
 unlock extract \
-  --source Qwen/Qwen1.5-7B-Chat \
-  --base   Qwen/Qwen1.5-7B \
+  --source Qwen/Qwen1.5-1.8B-Chat \
+  --base   Qwen/Qwen1.5-1.8B \
   --prompts data/cot_prompts.jsonl \
   --layers 16,20,24 \
   --capability cot \
-  --out directions/qwen7b_cot.pt
+  --out directions/qwen1_8b_cot.pt
 ```
 
 ### 2. Transfer into a target model
 
 ```bash
 unlock transfer \
-  --direction directions/qwen7b_cot.pt \
+  --direction directions/qwen1_8b_cot.pt \
   --target Qwen/Qwen1.5-1.8B \
   --anchor-prompts data/anchor_prompts.jsonl \
   --out directions/qwen1_8b_cot_aligned.pt
@@ -77,7 +78,7 @@ unlock push \
   --direction directions/qwen1_8b_cot_aligned.pt \
   --repo-id your-username/unlock-cot-qwen1.5-1.8b \
   --capability cot \
-  --source-model Qwen/Qwen1.5-7B-Chat \
+  --source-model Qwen/Qwen1.5-1.8B-Chat \
   --accuracy-delta 0.121
 ```
 
@@ -118,7 +119,7 @@ On context exit, every hook is removed — the model returns to its original beh
 
 ## Results
 
-Transferring a chain-of-thought direction extracted from `Qwen1.5-7B-Chat` into the smaller base `Qwen1.5-1.8B`, evaluated on a 200-example MATH subset:
+Transferring a chain-of-thought direction extracted from `Qwen1.5-1.8B-Chat` into the base `Qwen1.5-1.8B`, evaluated on a 200-example MATH subset:
 
 | Target                | Direction | α   | MATH Accuracy | Δ vs. baseline |
 | --------------------- | --------- | --- | ------------- | -------------- |
@@ -137,8 +138,8 @@ Directions are serialized as `.pt` files using `torch.save` with the following s
 {
     "directions": {layer_idx: np.ndarray(shape=(hidden_dim,), dtype=float32), ...},
     "metadata": {
-        "source_model":   "Qwen/Qwen1.5-7B-Chat",
-        "base_model":     "Qwen/Qwen1.5-7B",
+        "source_model":   "Qwen/Qwen1.5-1.8B-Chat",
+        "base_model":     "Qwen/Qwen1.5-1.8B",
         "target_model":   "Qwen/Qwen1.5-1.8B",   # present after `transfer`
         "capability":     "cot",
         "hidden_dim":     2048,
@@ -149,7 +150,7 @@ Directions are serialized as `.pt` files using `torch.save` with the following s
 }
 ```
 
-A direction file for a 7B-to-1.8B transfer across 3 layers is ~25 KB. They're small, composable, and safe to share — they contain no training data and cannot reconstruct the source model.
+A direction file for a 1.8B transfer across 3 layers is ~25 KB. They're small, composable, and safe to share — they contain no training data and cannot reconstruct the source model.
 
 ### Sharing on the Hub
 

@@ -25,6 +25,12 @@ ENV/
 
 # Environment
 .env
+.env.*
+!.env.example
+
+# Internal / local-only
+CLAUDE.md
+.claude/
 
 # IDE
 .vscode/

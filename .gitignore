@@ -27,6 +27,7 @@ ENV/
 .env
 .env.*
 !.env.example
+.env.example
 
 # Internal / local-only
 CLAUDE.md
